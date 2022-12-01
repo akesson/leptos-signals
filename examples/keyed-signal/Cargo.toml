@@ -12,11 +12,9 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 leptos-signals = { path = "../.." }
-leptos = { git = "https://github.com/gbj/leptos", default-features = false, features = [
-  "serde",
-] }
-leptos_meta = { git = "https://github.com/gbj/leptos", default-features = false }
-leptos_router = { git = "https://github.com/gbj/leptos", default-features = false }
+leptos = { default-features = false, features = ["serde"], version = "0.0" }
+leptos_meta = { default-features = false, version = "0.0" }
+leptos_router = { default-features = false, version = "0.0" }
 
 gloo-net = { version = "0.2", features = ["http"] }
 gloo-timers = { version = "0.2", features = ["futures"] }
@@ -44,7 +42,7 @@ opt-level = 'z'
 
 [features]
 leptos_autoreload = []
-default = ["csr"]
+default = ["ssr"]
 hydrate = [
   "leptos/hydrate",
   "leptos_meta/hydrate",
