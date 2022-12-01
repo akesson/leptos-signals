@@ -1,0 +1,12 @@
+[package]
+name = "leptos-signals"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+leptos = { git = "https://github.com/gbj/leptos", default-features = false }
+
+[features]
+stable = ["leptos/stable"]

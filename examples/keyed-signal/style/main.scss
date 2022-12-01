@@ -1,0 +1,32 @@
+body {
+  margin-top: 6rem;
+  margin-left: 4rem;
+}
+
+h1, h2 {
+  font-size: x-large;
+}
+
+div {
+  margin-bottom: 1rem;
+  font-size: large;
+}
+
+h1.error {
+  color: red
+}
+
+a {
+  font-size: large;
+  display: block;
+}
+
+html {
+  background-color: rgb(235, 235, 235);
+}
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: rgb(25, 25, 25);
+    color: rgb(220, 220, 220);
+  }
+}
