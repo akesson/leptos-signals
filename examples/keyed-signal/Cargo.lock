@@ -934,7 +934,7 @@ dependencies = [
  "futures",
  "gloo-net",
  "gloo-timers",
- "leptos",
+ "leptos 0.0.19 (git+https://github.com/gbj/leptos)",
  "leptos-signals",
  "leptos_meta",
  "leptos_router",
@@ -961,20 +961,45 @@ checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 [[package]]
 name = "leptos"
 version = "0.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f473e8be073e7269707ca3db6479590587244f696e7c45898e89cb5869445232"
+dependencies = [
+ "leptos_core 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "leptos_dom 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "leptos_macro 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "leptos_reactive 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "leptos_server 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "leptos"
+version = "0.0.19"
 source = "git+https://github.com/gbj/leptos#8d671866a3402f2e65e33ef73348e6750bcb1043"
 dependencies = [
- "leptos_core",
- "leptos_dom",
- "leptos_macro",
- "leptos_reactive",
- "leptos_server",
+ "leptos_core 0.0.19 (git+https://github.com/gbj/leptos)",
+ "leptos_dom 0.0.19 (git+https://github.com/gbj/leptos)",
+ "leptos_macro 0.0.19 (git+https://github.com/gbj/leptos)",
+ "leptos_reactive 0.0.19 (git+https://github.com/gbj/leptos)",
+ "leptos_server 0.0.19 (git+https://github.com/gbj/leptos)",
 ]
 
 [[package]]
 name = "leptos-signals"
-version = "0.1.0"
+version = "0.0.1"
 dependencies = [
- "leptos",
+ "leptos 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "leptos_core"
+version = "0.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "04900b395ead1eb018e1f54cdcc21455b29d675baae65ff019177d5be79bebe5"
+dependencies = [
+ "leptos_dom 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "leptos_macro 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "leptos_reactive 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log",
 ]
 
 [[package]]
@@ -982,11 +1007,29 @@ name = "leptos_core"
 version = "0.0.19"
 source = "git+https://github.com/gbj/leptos#8d671866a3402f2e65e33ef73348e6750bcb1043"
 dependencies = [
- "leptos_dom",
- "leptos_macro",
- "leptos_reactive",
+ "leptos_dom 0.0.19 (git+https://github.com/gbj/leptos)",
+ "leptos_macro 0.0.19 (git+https://github.com/gbj/leptos)",
+ "leptos_reactive 0.0.19 (git+https://github.com/gbj/leptos)",
  "log",
  "typed-builder 0.11.0",
+]
+
+[[package]]
+name = "leptos_dom"
+version = "0.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "24ab6c24d6374b8206baba236ab86d4c56ab925673727cacd0ba91847f7fed39"
+dependencies = [
+ "cfg-if",
+ "futures",
+ "html-escape",
+ "js-sys",
+ "leptos_reactive 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log",
+ "serde_json",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
+ "web-sys",
 ]
 
 [[package]]
@@ -998,7 +1041,7 @@ dependencies = [
  "futures",
  "html-escape",
  "js-sys",
- "leptos_reactive",
+ "leptos_reactive 0.0.19 (git+https://github.com/gbj/leptos)",
  "log",
  "serde_json",
  "wasm-bindgen",
@@ -1009,13 +1052,32 @@ dependencies = [
 [[package]]
 name = "leptos_macro"
 version = "0.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "41716f586c8b70cb0244e7ac5b3e98004d547a9eafadca96909f9feb0041eea7"
+dependencies = [
+ "cfg-if",
+ "lazy_static",
+ "leptos_dom 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "leptos_reactive 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "leptos_server 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "proc-macro-error",
+ "proc-macro2",
+ "quote",
+ "syn",
+ "syn-rsx",
+ "uuid",
+]
+
+[[package]]
+name = "leptos_macro"
+version = "0.0.19"
 source = "git+https://github.com/gbj/leptos#8d671866a3402f2e65e33ef73348e6750bcb1043"
 dependencies = [
  "cfg-if",
  "lazy_static",
- "leptos_dom",
- "leptos_reactive",
- "leptos_server",
+ "leptos_dom 0.0.19 (git+https://github.com/gbj/leptos)",
+ "leptos_reactive 0.0.19 (git+https://github.com/gbj/leptos)",
+ "leptos_server 0.0.19 (git+https://github.com/gbj/leptos)",
  "proc-macro-error",
  "proc-macro2",
  "quote",
@@ -1030,8 +1092,30 @@ version = "0.0.3"
 source = "git+https://github.com/gbj/leptos#8d671866a3402f2e65e33ef73348e6750bcb1043"
 dependencies = [
  "cfg-if",
- "leptos",
+ "leptos 0.0.19 (git+https://github.com/gbj/leptos)",
  "typed-builder 0.11.0",
+ "web-sys",
+]
+
+[[package]]
+name = "leptos_reactive"
+version = "0.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "dcecf4528d7f9ba50ad6c740fea794a91ae4d6ab666a95ede3d963470f994a96"
+dependencies = [
+ "base64",
+ "cfg-if",
+ "futures",
+ "js-sys",
+ "log",
+ "rmp-serde",
+ "serde",
+ "serde-wasm-bindgen",
+ "serde_json",
+ "slotmap",
+ "thiserror",
+ "wasm-bindgen",
+ "wasm-bindgen-futures",
  "web-sys",
 ]
 
@@ -1069,7 +1153,7 @@ dependencies = [
  "itertools",
  "js-sys",
  "lazy_static",
- "leptos",
+ "leptos 0.0.19 (git+https://github.com/gbj/leptos)",
  "linear-map",
  "log",
  "regex",
@@ -1087,14 +1171,38 @@ dependencies = [
 [[package]]
 name = "leptos_server"
 version = "0.0.19"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f7ba91c3664dc27671b774a7fc28a674aa4ea5ee6ed1f092b0d04eee53b5b73a"
+dependencies = [
+ "ciborium",
+ "form_urlencoded",
+ "gloo-net",
+ "lazy_static",
+ "leptos_dom 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "leptos_reactive 0.0.19 (registry+https://github.com/rust-lang/crates.io-index)",
+ "linear-map",
+ "log",
+ "proc-macro2",
+ "quote",
+ "rmp-serde",
+ "serde",
+ "serde_json",
+ "serde_urlencoded",
+ "syn",
+ "thiserror",
+]
+
+[[package]]
+name = "leptos_server"
+version = "0.0.19"
 source = "git+https://github.com/gbj/leptos#8d671866a3402f2e65e33ef73348e6750bcb1043"
 dependencies = [
  "ciborium",
  "form_urlencoded",
  "gloo-net",
  "lazy_static",
- "leptos_dom",
- "leptos_reactive",
+ "leptos_dom 0.0.19 (git+https://github.com/gbj/leptos)",
+ "leptos_reactive 0.0.19 (git+https://github.com/gbj/leptos)",
  "linear-map",
  "log",
  "proc-macro2",
