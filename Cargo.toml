@@ -1,6 +1,7 @@
 [package]
 name = "leptos-signals"
 license = "MIT"
+description = "Various signals for Leptos"
 repository = "https://github.com/akesson/leptos-signals"
 categories = ["web-programming"]
 keywords = ["leptos"]
