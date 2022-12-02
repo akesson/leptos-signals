@@ -14,10 +14,11 @@ use leptos_reactive::{
 /// The value needs to implement Default, if it happens to be something
 /// that doesn't have a Default implementation, then wrap it in an Option
 /// since it implements a Default value of None.
+#[derive(Clone)]
 pub struct KeyedSignal<Key, Val>
 where
     Key: 'static + PartialEq + Clone + Debug,
-    Val: 'static + Default,
+    Val: 'static,
 {
     inner: KeyedSignalInner<Key, Val>,
     value: ReadSignal<Val>,
@@ -26,7 +27,7 @@ where
 impl<Key, Val> KeyedSignal<Key, Val>
 where
     Key: 'static + PartialEq + Clone + Debug,
-    Val: 'static + Clone + Default,
+    Val: 'static + Clone,
 {
     pub fn get(&self) -> Val {
         self.value.get()
@@ -40,31 +41,11 @@ where
     }
 }
 
-pub fn create_keyed_signal<Key, Val, F, Fu>(
-    cx: Scope,
-    key: impl Fn() -> Key + 'static,
-    lookup: F,
-) -> KeyedSignal<Key, Val>
-where
-    Key: 'static + PartialEq + Clone + Debug,
-    Val: 'static + Default,
-    F: Fn(Key, RwSignal<Val>) -> Fu + 'static,
-    Fu: Future<Output = ()> + 'static,
-{
-    let (value, inner) = create_key_signal_inner(cx, key, lookup);
-    let act = inner.action_fn.clone();
-    create_effect(cx, move |_| {
-        let key = inner.key.get();
-        let fut = (act)(key, inner.value);
-        spawn_local(async move { fut.await })
-    });
-    KeyedSignal { inner, value }
-}
-
+#[derive(Clone)]
 struct KeyedSignalInner<Key, Val>
 where
     Key: 'static + PartialEq + Clone + Debug,
-    Val: 'static + Default,
+    Val: 'static,
 {
     key: Memo<Key>,
     value: RwSignal<Val>,
@@ -75,16 +56,17 @@ where
 fn create_key_signal_inner<Key, Val, F, Fu>(
     cx: Scope,
     key: impl Fn() -> Key + 'static,
+    value: Val,
     lookup: F,
 ) -> (ReadSignal<Val>, KeyedSignalInner<Key, Val>)
 where
     Key: 'static + PartialEq + Clone + Debug,
-    Val: 'static + Default,
+    Val: 'static,
     F: Fn(Key, RwSignal<Val>) -> Fu + 'static,
     Fu: Future<Output = ()> + 'static,
 {
     let key = create_memo(cx, move |_| key());
-    let value = create_rw_signal(cx, Val::default());
+    let value = create_rw_signal(cx, value);
 
     let action_fn = Rc::new(move |input: Key, value: RwSignal<Val>| {
         let input = input.clone();
@@ -100,4 +82,40 @@ where
             action_fn,
         },
     )
+}
+
+pub fn create_keyed_signal<Key, Val, F, Fu>(
+    cx: Scope,
+    key: impl Fn() -> Key + 'static,
+    lookup: F,
+) -> KeyedSignal<Key, Val>
+where
+    Key: 'static + PartialEq + Clone + Debug,
+    Val: 'static + Default,
+    F: Fn(Key, RwSignal<Val>) -> Fu + 'static,
+    Fu: Future<Output = ()> + 'static,
+{
+    new_keyed_signal(cx, key, Val::default(), lookup)
+}
+
+pub fn new_keyed_signal<Key, Val, F, Fu>(
+    cx: Scope,
+    key: impl Fn() -> Key + 'static,
+    value: Val,
+    lookup: F,
+) -> KeyedSignal<Key, Val>
+where
+    Key: 'static + PartialEq + Clone + Debug,
+    Val: 'static,
+    F: Fn(Key, RwSignal<Val>) -> Fu + 'static,
+    Fu: Future<Output = ()> + 'static,
+{
+    let (value, inner) = create_key_signal_inner(cx, key, value, lookup);
+    let act = inner.action_fn.clone();
+    create_effect(cx, move |_| {
+        let key = inner.key.get();
+        let fut = (act)(key, inner.value);
+        spawn_local(async move { fut.await })
+    });
+    KeyedSignal { inner, value }
 }
