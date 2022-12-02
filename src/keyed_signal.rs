@@ -1,7 +1,7 @@
 use std::{fmt::Debug, future::Future, pin::Pin, rc::Rc};
 
-use leptos::{
-    create_effect, create_memo, create_signal, spawn_local, Memo, ReadSignal, Scope, WriteSignal,
+use leptos_reactive::{
+    create_effect, create_memo, create_rw_signal, spawn_local, Memo, ReadSignal, RwSignal, Scope,
 };
 
 /// A KeyedSignal associates a key with a value.
@@ -48,14 +48,14 @@ pub fn create_keyed_signal<Key, Val, F, Fu>(
 where
     Key: 'static + PartialEq + Clone + Debug,
     Val: 'static + Default,
-    F: Fn(Key, WriteSignal<Val>) -> Fu + 'static,
+    F: Fn(Key, RwSignal<Val>) -> Fu + 'static,
     Fu: Future<Output = ()> + 'static,
 {
     let (value, inner) = create_key_signal_inner(cx, key, lookup);
     let act = inner.action_fn.clone();
     create_effect(cx, move |_| {
         let key = inner.key.get();
-        let fut = (act)(key, inner.set_value);
+        let fut = (act)(key, inner.value);
         spawn_local(async move { fut.await })
     });
     KeyedSignal { inner, value }
@@ -67,9 +67,9 @@ where
     Val: 'static + Default,
 {
     key: Memo<Key>,
-    set_value: WriteSignal<Val>,
+    value: RwSignal<Val>,
 
-    action_fn: Rc<dyn Fn(Key, WriteSignal<Val>) -> Pin<Box<dyn Future<Output = ()>>>>,
+    action_fn: Rc<dyn Fn(Key, RwSignal<Val>) -> Pin<Box<dyn Future<Output = ()>>>>,
 }
 
 fn create_key_signal_inner<Key, Val, F, Fu>(
@@ -80,23 +80,23 @@ fn create_key_signal_inner<Key, Val, F, Fu>(
 where
     Key: 'static + PartialEq + Clone + Debug,
     Val: 'static + Default,
-    F: Fn(Key, WriteSignal<Val>) -> Fu + 'static,
+    F: Fn(Key, RwSignal<Val>) -> Fu + 'static,
     Fu: Future<Output = ()> + 'static,
 {
     let key = create_memo(cx, move |_| key());
-    let (value, set_value) = create_signal(cx, Val::default());
+    let value = create_rw_signal(cx, Val::default());
 
-    let action_fn = Rc::new(move |input: Key, value: WriteSignal<Val>| {
+    let action_fn = Rc::new(move |input: Key, value: RwSignal<Val>| {
         let input = input.clone();
         let fut = lookup(input, value);
         Box::pin(async move { fut.await }) as Pin<Box<dyn Future<Output = ()>>>
     });
 
     (
-        value,
+        value.read_only(),
         KeyedSignalInner {
             key,
-            set_value,
+            value,
             action_fn,
         },
     )
